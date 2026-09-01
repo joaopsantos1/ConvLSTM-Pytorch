@@ -1,0 +1,6 @@
+# Instale PyTorch com CUDA separadamente conforme RUN_GUIDE.md.
+# Estas são as dependências que o código importa diretamente.
+numpy==2.4.6
+torchmetrics==1.9.0
+tqdm==4.67.3
+codecarbon==3.2.5
