@@ -1,11 +1,3 @@
-"""Célula ConvLSTM usada pelo modelo de nowcasting.
-
-Uma ConvLSTM é uma LSTM cujas operações lineares são convoluções 2D. Assim,
-ela preserva a estrutura espacial do radar enquanto processa a sequência no
-tempo. Este módulo contém somente a célula necessária pelo modelo; o wrapper
-genérico antigo não era utilizado pelo treinamento.
-"""
-
 from __future__ import annotations
 
 from typing import Tuple
@@ -15,12 +7,6 @@ from torch import nn
 
 
 class ConvLSTMCell(nn.Module):
-    """Uma camada ConvLSTM com peephole e normalização opcionais.
-
-    Os pesos de peephole têm um valor por canal, em vez de um valor por pixel.
-    Isso reduz drasticamente o número de parâmetros e permite usar imagens de
-    qualquer resolução. ``GroupNorm`` também não depende da altura/largura.
-    """
 
     def __init__(
         self,
@@ -56,7 +42,6 @@ class ConvLSTMCell(nn.Module):
     def forward(
         self, input_tensor: torch.Tensor, state: tuple[torch.Tensor, torch.Tensor]
     ) -> tuple[torch.Tensor, torch.Tensor]:
-        """Processa um frame ``(B, C, H, W)`` e retorna ``(h_novo, c_novo)``."""
         hidden, cell = state
         gates = self.gate_norm(
             self.input_conv(self.input_dropout(input_tensor))
@@ -80,6 +65,5 @@ class ConvLSTMCell(nn.Module):
     def initial_state(
         self, batch_size: int, height: int, width: int, device: torch.device, dtype: torch.dtype
     ) -> tuple[torch.Tensor, torch.Tensor]:
-        """Cria os estados oculto e de memória com o dispositivo correto."""
         shape = (batch_size, self.hidden_dim, height, width)
         return torch.zeros(shape, device=device, dtype=dtype), torch.zeros(shape, device=device, dtype=dtype)
