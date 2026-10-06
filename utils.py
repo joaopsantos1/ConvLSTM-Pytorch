@@ -1,4 +1,3 @@
-"""Funções pequenas compartilhadas pelo treinamento e pela avaliação."""
 
 from __future__ import annotations
 
